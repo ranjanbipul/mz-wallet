@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: "mintzip"
+      MYSQL_USER: "bipul"
+      MYSQL_PASSWORD: "qwerty"
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  web:
+    build: .
+    command: ["./wait-for-it.sh", "db:3306", "--", "./app.sh"]
+    volumes:
+      - .:/code
+    ports:
+      - "9001:9001"
+    depends_on:
+      - db
